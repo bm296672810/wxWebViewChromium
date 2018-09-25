@@ -148,14 +148,6 @@ void wxWebViewChromium::OnSize(wxSizeEvent& event)
 void wxWebViewChromium::SetPageSource(const wxString& pageSource)
 {
     m_pageSource = pageSource;
-    /* LOG(INFO) << "wxWebViewChromium::SetPageSource():" << m_pageSource;
-     ofstream ohtml("tmp/tmp.html");
-     ohtml << m_pageSource;
-     static int i = 0;
-     i++;*/
-   // cout <<"------------------" << i << endl;
-   // cout << "m_pageSource:" << m_pageSource << endl;
-
 }
 
 void wxWebViewChromium::SetPageText(const wxString& pageText)
@@ -170,7 +162,6 @@ void* wxWebViewChromium::GetNativeBackend() const
 
 bool wxWebViewChromium::CanGoForward() const
 {
-	//LOG(WARNING) << "wxWebViewChromium::CanGoForward before...";
     if (m_historyEnabled)
         return m_historyPosition != static_cast<int>(m_historyList.size()) - 1;
     else
@@ -270,8 +261,7 @@ void wxWebViewChromium::Reload(wxWebViewReloadFlags flags)
 wxString wxWebViewChromium::GetPageSource() const
 {
     CefRefPtr<CefStringVisitor> source_visitor = new wxStringVisitor(const_cast<wxWebViewChromium*>(this), wxStringVisitor::PAGE_SOURCE);
-   /* CefRefPtr<CefFrame> mainFrame = getClientHandler()->GetBrowser()->GetMainFrame();
-    mainFrame->GetSource(source_visitor);*/
+
     getClientHandler()->GetBrowser()->GetMainFrame()->GetSource(source_visitor);
     return m_pageSource;
 }
@@ -337,25 +327,15 @@ void wxWebViewChromium::DeleteSelection()
 void wxWebViewChromium::ClearSelection()
 {
     wxString jsclear = "if (window.getSelection) { alert('hello'); if (window.getSelection().empty) { window.getSelection().empty(); } }";
-    //wxString jsclear = "if (window.getSelection) { alert('hello'); window.getSelection().getRangeAt(0).surroundContents(document.createElement(\"strong\")); }";
+    
     RunScript(jsclear);
 }
 
-//bool wxWebViewChromium::RunScript(const wxString& javascript, wxString* output)
-//{
-//    //m_clientHandler->GetBrowser()->GetMainFrame()->ExecuteJavaScript(javascript.ToStdString(),
-//    //"", 0);
-//    CefRefPtr<CefBrowser> browser = m_clientHandler->GetBrowser();
-//    CefRefPtr<CefFrame> frame = browser->GetMainFrame();
-//    frame->ExecuteJavaScript(javascript.ToStdString(), "", 0);
-//    return true;
-//}
 void wxWebViewChromium::RunScript(const wxString& javascript)
 {
     CefRefPtr<CefBrowser> browser = m_clientHandler->GetBrowser();
     CefRefPtr<CefFrame> frame = browser->GetMainFrame();
 #ifdef _WIN32
-	//ansi2utf8(javascript.ToStdString());
     frame->ExecuteJavaScript(ansi2utf8(javascript.ToStdString()), "", 0);
 #else
 	frame->ExecuteJavaScript(javascript.ToStdString(), "", 0);
