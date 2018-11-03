@@ -28,6 +28,7 @@
 #include <include/cef_client.h>
 #include <include/cef_process_message.h>
 #include <include/base/cef_logging.h>
+#include <include/cef_version.h>
 
 #include "src/webview/MyCefMessage.h"
 #include "src/webview/MyCefV8Handler.h"

@@ -6,6 +6,19 @@ project(mywbview)
 
 set(CMAKE_CONFIGURATION_TYPES Debug Release)
 
+set(CEF_ROOT D:/qtwork/cef_binary_3.3163.1671.g700dc25_windows32)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CEF_ROOT}/cmake")
+find_package(CEF REQUIRED)
+
+add_subdirectory(${CEF_LIBCEF_DLL_WRAPPER_PATH} libcef_dll_wrapper)
+
+PRINT_CEF_CONFIG()
+
+message("CEF_LIBCEF_DLL_WRAPPER_PATH:${CEF_LIBCEF_DLL_WRAPPER_PATH}")
+message("CMAKE_CURRENT_BINARY_DIR:${CMAKE_CURRENT_BINARY_DIR}")
+message("CEF_TARGET_OUT_DIR:${CEF_TARGET_OUT_DIR}")
+
+
 set(WX_ROOT
 C:/wxWidgets-3.0.1
 )
@@ -19,6 +32,7 @@ ${WX_ROOT}/lib/vc_lib/mswu
 set(INCLUDE_DIRS
 ${WX_INCULDE_DIR}
 ${CMAKE_CURRENT_SOURCE_DIR}
+${CEF_ROOT}
 )
 
 INCLUDE_DIRECTORIES(${INCLUDE_DIRS})
@@ -47,7 +61,8 @@ lib/vc_lib
 
 set(MY_LINK_DIRS
 ${WX_ROOT}/lib/vc_lib
-${MY_LIB_ROOT}/cef
+${CEF_ROOT}
+${CMAKE_CURRENT_BINARY_DIR}/libcef_dll_wrapper
 )
 
 link_directories(${MY_LINK_DIRS})
@@ -73,18 +88,24 @@ set(MY_DEFINE_MACRO
 )
 add_definitions(${MY_DEFINE_MACRO})
 
-ADD_EXECUTABLE(${PROJECT_NAME} WIN32 ${MY_SRCS})
+add_executable(${PROJECT_NAME} WIN32 ${MY_SRCS})
+
+add_dependencies(${PROJECT_NAME} libcef_dll_wrapper)
 
 if(MSVC)
-SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /level='requireAdministrator' /uiAccess='false'" )
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /level='requireAdministrator' /uiAccess='false'" )
 set(PDB_OUTPUT_DIRECTORY "${project_path}/Release")
 set(PDB_NAME ${CMAKE_PROJECT_NAME}.pdb)
 endif()
 
 set(RELAY_WX_LIBS
-wxbase30d.lib
-wxmsw30d_core.lib
-wxmsw30d_webview.lib
+wxbase30ud.lib
+wxmsw30ud_core.lib
+wxmsw30ud_webview.lib
+wxjpegd.lib
+wxpngd.lib
+wxtiffd.lib
+wxzlibd.lib
 )
 
 set(RELY_LIBS_WIN
@@ -109,5 +130,3 @@ wininet.lib
 )
 
 target_link_libraries(${PROJECT_NAME} ${OTHER_LINK_FLAGS} ${RELY_LIBS_WIN})
-
-file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/Release)
