@@ -7,13 +7,24 @@ project(mywbview)
 set(CMAKE_CONFIGURATION_TYPES Debug Release)
 
 set(CMAKE_BUILD_TYPE Debug)
-
-set(WX_ROOT
-C:/wxWidgets-3.0.1
-)
 set(CEF_ROOT
 F:/tools/cef_binary_3.3538.1852.gcb937fc_windows32
 )
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CEF_ROOT}/cmake")
+find_package(CEF REQUIRED)
+
+add_subdirectory(${CEF_LIBCEF_DLL_WRAPPER_PATH} libcef_dll_wrapper)
+
+PRINT_CEF_CONFIG()
+
+message("CEF_LIBCEF_DLL_WRAPPER_PATH:${CEF_LIBCEF_DLL_WRAPPER_PATH}")
+message("CMAKE_CURRENT_BINARY_DIR:${CMAKE_CURRENT_BINARY_DIR}")
+message("CEF_TARGET_OUT_DIR:${CEF_TARGET_OUT_DIR}")
+set(WX_ROOT
+C:/wxWidgets-3.0.1
+)
+
 set(WX_INCULDE_DIR
 ${WX_ROOT}/include
 ${WX_ROOT}/lib/vc_lib/mswu
@@ -52,7 +63,8 @@ lib/vc_lib
 
 set(MY_LINK_DIRS
 ${WX_ROOT}/lib/vc_lib
-${MY_LIB_ROOT}/cef
+${CEF_ROOT}
+${CMAKE_CURRENT_BINARY_DIR}/libcef_dll_wrapper
 )
 
 link_directories(${MY_LINK_DIRS})
@@ -78,10 +90,12 @@ set(MY_DEFINE_MACRO
 )
 add_definitions(${MY_DEFINE_MACRO})
 
-ADD_EXECUTABLE(${PROJECT_NAME} WIN32 ${MY_SRCS})
+add_executable(${PROJECT_NAME} WIN32 ${MY_SRCS})
+
+add_dependencies(${PROJECT_NAME} libcef_dll_wrapper)
 
 if(MSVC)
-SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /level='requireAdministrator' /uiAccess='false'" )
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /level='requireAdministrator' /uiAccess='false'" )
 set(PDB_OUTPUT_DIRECTORY "${project_path}/Release")
 set(PDB_NAME ${CMAKE_PROJECT_NAME}.pdb)
 endif()
@@ -105,8 +119,7 @@ wxpng.lib
 wxtiff.lib
 wxzlib.lib
 )
-message("build type:, " ${CMAKE_BUILD_TYPE})
-message(${RELAY_WX_LIBS_${CMAKE_BUILD_TYPE}})
+
 set(RELY_LIBS_WIN
 ${RELAY_WX_LIBS_${CMAKE_BUILD_TYPE}}
 libcef.lib
@@ -129,5 +142,3 @@ wininet.lib
 )
 
 target_link_libraries(${PROJECT_NAME} ${OTHER_LINK_FLAGS} ${RELY_LIBS_WIN})
-
-file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/Release)
