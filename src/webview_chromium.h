@@ -28,6 +28,7 @@
 #include <include/cef_client.h>
 #include <include/cef_process_message.h>
 #include <include/base/cef_logging.h>
+#include <include/cef_version.h>
 
 #include "src/webview/MyCefMessage.h"
 #include "src/webview/MyCefV8Handler.h"
@@ -62,7 +63,7 @@ class ClientHandler : public CefClient,
 
     public CefDragHandler,
     public CefFocusHandler,
-    public CefGeolocationHandler,
+    //public CefGeolocationHandler,
     public CefKeyboardHandler,
 	public CefDialogHandler,
 
@@ -83,7 +84,7 @@ public:
 
     virtual CefRefPtr<CefDragHandler> GetDragHandler() OVERRIDE { return this; }
     virtual CefRefPtr<CefFocusHandler> GetFocusHandler() OVERRIDE { return this; }
-    virtual CefRefPtr<CefGeolocationHandler> GetGeolocationHandler() OVERRIDE {return this; }
+    //virtual CefRefPtr<CefGeolocationHandler> GetGeolocationHandler() OVERRIDE {return this; }
     virtual CefRefPtr<CefKeyboardHandler> GetKeyboardHandler() OVERRIDE { return this; }
 	virtual CefRefPtr<CefDialogHandler> GetDialogHandler() OVERRIDE{ return this; }
     virtual CefRefPtr<CefRequestHandler> GetRequestHandler() OVERRIDE{ return this; }
@@ -97,11 +98,13 @@ public:
         const CefString& WXUNUSED(url))OVERRIDE;
     virtual void OnTitleChange(CefRefPtr<CefBrowser> browser,
         const CefString& title)OVERRIDE;
+
+#if CHROME_VERSION_BUILD < 3538
     virtual bool OnConsoleMessage(CefRefPtr<CefBrowser> WXUNUSED(browser),
         const CefString& WXUNUSED(message),
         const CefString& WXUNUSED(source),
         int WXUNUSED(line))OVERRIDE;
-
+#endif
     // CefContextMenuHandler methods
     virtual void OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
         CefRefPtr<CefFrame> frame,
@@ -210,12 +213,12 @@ public:
     // CefFocusHandler methods
     virtual void OnTakeFocus(CefRefPtr<CefBrowser> browser, bool next) OVERRIDE;
 
-    // CefGeolocationHandler methods
-    virtual bool OnRequestGeolocationPermission(
-                                    CefRefPtr<CefBrowser> browser,
-                                    const CefString& requesting_url,
-                                    int request_id,
-                                    CefRefPtr<CefGeolocationCallback> callback) OVERRIDE;
+    //// CefGeolocationHandler methods
+    //virtual bool OnRequestGeolocationPermission(
+    //                                CefRefPtr<CefBrowser> browser,
+    //                                const CefString& requesting_url,
+    //                                int request_id,
+    //                                CefRefPtr<CefGeolocationCallback> callback) OVERRIDE;
 
     // CefKeyboardHandler methods
     virtual bool OnPreKeyEvent(CefRefPtr<CefBrowser> browser,

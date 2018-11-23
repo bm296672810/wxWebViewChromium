@@ -6,10 +6,14 @@ project(mywbview)
 
 set(CMAKE_CONFIGURATION_TYPES Debug Release)
 
+set(CMAKE_BUILD_TYPE Debug)
+
 set(WX_ROOT
 C:/wxWidgets-3.0.1
 )
-
+set(CEF_ROOT
+F:/tools/cef_binary_3.3538.1852.gcb937fc_windows32
+)
 set(WX_INCULDE_DIR
 ${WX_ROOT}/include
 ${WX_ROOT}/lib/vc_lib/mswu
@@ -19,6 +23,7 @@ ${WX_ROOT}/lib/vc_lib/mswu
 set(INCLUDE_DIRS
 ${WX_INCULDE_DIR}
 ${CMAKE_CURRENT_SOURCE_DIR}
+${CEF_ROOT}
 )
 
 INCLUDE_DIRECTORIES(${INCLUDE_DIRS})
@@ -81,14 +86,29 @@ set(PDB_OUTPUT_DIRECTORY "${project_path}/Release")
 set(PDB_NAME ${CMAKE_PROJECT_NAME}.pdb)
 endif()
 
-set(RELAY_WX_LIBS
-wxbase30d.lib
-wxmsw30d_core.lib
-wxmsw30d_webview.lib
+set(RELAY_WX_LIBS_Debug
+wxbase30ud.lib
+wxmsw30ud_core.lib
+wxmsw30ud_webview.lib
+wxjpegd.lib
+wxpngd.lib
+wxtiffd.lib
+wxzlibd.lib
 )
 
+set(RELAY_WX_LIBS_Release
+wxbase30u.lib
+wxmsw30u_core.lib
+wxmsw30u_webview.lib
+wxjpeg.lib
+wxpng.lib
+wxtiff.lib
+wxzlib.lib
+)
+message("build type:, " ${CMAKE_BUILD_TYPE})
+message(${RELAY_WX_LIBS_${CMAKE_BUILD_TYPE}})
 set(RELY_LIBS_WIN
-${RELAY_WX_LIBS}
+${RELAY_WX_LIBS_${CMAKE_BUILD_TYPE}}
 libcef.lib
 libcef_dll_wrapper.lib
 kernel32.lib

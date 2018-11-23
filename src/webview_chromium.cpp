@@ -695,11 +695,13 @@ void ClientHandler::OnTitleChange(CefRefPtr<CefBrowser> browser, const CefString
     m_webview->HandleWindowEvent(event);
 }
 
+#if CHROME_VERSION_BUILD < 3538
 bool ClientHandler::OnConsoleMessage(CefRefPtr<CefBrowser> WXUNUSED(browser), const CefString& WXUNUSED(message),
     const CefString& WXUNUSED(source), int WXUNUSED(line))
 {
     return false;
 }
+#endif
 
 // CefContextMenuHandler methods
 void ClientHandler::OnBeforeContextMenu(CefRefPtr<CefBrowser> browser,
@@ -1162,20 +1164,20 @@ void ClientHandler::OnTakeFocus(CefRefPtr<CefBrowser> browser, bool next) {
     NotifyTakeFocus(next);
 }
 
-bool ClientHandler::OnRequestGeolocationPermission(
-                                                   CefRefPtr<CefBrowser> browser,
-                                                   const CefString& requesting_url,
-                                                   int request_id,
-                                                   CefRefPtr<CefGeolocationCallback> callback) {
-
-#ifdef __WXMAC__
-    CEF_REQUIRE_UI_THREAD();
-#endif
-    
-    // Allow geolocation access from all websites.
-    callback->Continue(true);
-    return true;
-}
+//bool ClientHandler::OnRequestGeolocationPermission(
+//                                                   CefRefPtr<CefBrowser> browser,
+//                                                   const CefString& requesting_url,
+//                                                   int request_id,
+//                                                   CefRefPtr<CefGeolocationCallback> callback) {
+//
+//#ifdef __WXMAC__
+//    CEF_REQUIRE_UI_THREAD();
+//#endif
+//    
+//    // Allow geolocation access from all websites.
+//    callback->Continue(true);
+//    return true;
+//}
 
 bool ClientHandler::OnPreKeyEvent(CefRefPtr<CefBrowser> browser,
                                   const CefKeyEvent& event,
