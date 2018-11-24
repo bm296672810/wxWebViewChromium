@@ -53,6 +53,8 @@ src/webview/MyCefApp.cpp
 src/webview/MyCefV8Handler.h
 src/webview/MyCefV8Handler.cpp
 src/webview/MyCefMessage.h
+src/webview/MyCefClientHandler.h
+src/webview/MyCefClientHandler.cpp
 )
 
 source_group(src FILES ${MY_SRCS})

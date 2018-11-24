@@ -28,7 +28,7 @@ myFrame::myFrame(wxFrame *frame, wxWindowID id, const wxString& title, const wxP
 {
     wxWebView::RegisterFactory(wxWebViewBackendChromium, wxSharedPtr < wxWebViewFactory >
         (new wxWebViewFactoryChromium));
-    m_webview = wxWebView::New(this, wxID_ANY, "www.baidu.com");
+    m_webview = wxWebView::New(this, wxID_ANY, "file:///F:/work/screen_shot/ssTest.html");
     
     wxBoxSizer* boxSizer = new wxBoxSizer(wxHORIZONTAL);
 
