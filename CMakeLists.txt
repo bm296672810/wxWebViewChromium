@@ -6,7 +6,7 @@ project(mywbview)
 
 set(CMAKE_CONFIGURATION_TYPES Debug Release)
 
-set(CEF_ROOT D:/qtwork/cef_binary_3.3163.1671.g700dc25_windows32)
+set(CEF_ROOT D:/ceflib/cef_binary_3.3163.1671.g700dc25_windows32)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CEF_ROOT}/cmake")
 find_package(CEF REQUIRED)
 
