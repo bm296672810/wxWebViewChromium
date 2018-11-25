@@ -21,6 +21,12 @@ bool myApp::OnInit()
     return true;
 }
 
+int myApp::OnExit()
+{
+    //CefQuitMessageLoop();
+    CefShutdown();
+    return wxApp::OnExit();
+}
 
 myFrame::myFrame(wxFrame *frame, wxWindowID id, const wxString& title, const wxPoint& pos,
     const wxSize& size, long style,

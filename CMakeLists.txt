@@ -6,7 +6,10 @@ project(mywbview)
 
 set(CMAKE_CONFIGURATION_TYPES Debug Release)
 
-set(CEF_ROOT D:/ceflib/cef_binary_3.3163.1671.g700dc25_windows32)
+set(CMAKE_BUILD_TYPE Debug)
+set(CEF_ROOT
+F:/tools/cef_binary_3.3538.1852.gcb937fc_windows32
+)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CEF_ROOT}/cmake")
 find_package(CEF REQUIRED)
 
@@ -17,8 +20,6 @@ PRINT_CEF_CONFIG()
 message("CEF_LIBCEF_DLL_WRAPPER_PATH:${CEF_LIBCEF_DLL_WRAPPER_PATH}")
 message("CMAKE_CURRENT_BINARY_DIR:${CMAKE_CURRENT_BINARY_DIR}")
 message("CEF_TARGET_OUT_DIR:${CEF_TARGET_OUT_DIR}")
-
-
 set(WX_ROOT
 C:/wxWidgets-3.0.1
 )
@@ -51,6 +52,8 @@ src/webview/MyCefApp.cpp
 src/webview/MyCefV8Handler.h
 src/webview/MyCefV8Handler.cpp
 src/webview/MyCefMessage.h
+src/webview/MyCefClientHandler.h
+src/webview/MyCefClientHandler.cpp
 )
 
 source_group(src FILES ${MY_SRCS})
@@ -98,7 +101,7 @@ set(PDB_OUTPUT_DIRECTORY "${project_path}/Release")
 set(PDB_NAME ${CMAKE_PROJECT_NAME}.pdb)
 endif()
 
-set(RELAY_WX_LIBS
+set(RELAY_WX_LIBS_Debug
 wxbase30ud.lib
 wxmsw30ud_core.lib
 wxmsw30ud_webview.lib
@@ -108,8 +111,18 @@ wxtiffd.lib
 wxzlibd.lib
 )
 
+set(RELAY_WX_LIBS_Release
+wxbase30u.lib
+wxmsw30u_core.lib
+wxmsw30u_webview.lib
+wxjpeg.lib
+wxpng.lib
+wxtiff.lib
+wxzlib.lib
+)
+
 set(RELY_LIBS_WIN
-${RELAY_WX_LIBS}
+${RELAY_WX_LIBS_${CMAKE_BUILD_TYPE}}
 libcef.lib
 libcef_dll_wrapper.lib
 kernel32.lib
