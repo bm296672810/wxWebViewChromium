@@ -38,23 +38,7 @@ ${CEF_ROOT}
 
 INCLUDE_DIRECTORIES(${INCLUDE_DIRS})
 
-set(MY_SRCS
-src/myApp.h
-src/myApp.cpp
-src/code.h
-src/code.cpp
-src/MyEvent.h
-src/MyEvent.cpp
-src/webview_chromium.h
-src/webview_chromium.cpp
-src/webview/MyCefApp.h
-src/webview/MyCefApp.cpp
-src/webview/MyCefV8Handler.h
-src/webview/MyCefV8Handler.cpp
-src/webview/MyCefMessage.h
-src/webview/MyCefClientHandler.h
-src/webview/MyCefClientHandler.cpp
-)
+include(cmake/files.cmake)
 
 source_group(src FILES ${MY_SRCS})
 
@@ -101,45 +85,6 @@ set(PDB_OUTPUT_DIRECTORY "${project_path}/Release")
 set(PDB_NAME ${CMAKE_PROJECT_NAME}.pdb)
 endif()
 
-set(RELAY_WX_LIBS_Debug
-wxbase30ud.lib
-wxmsw30ud_core.lib
-wxmsw30ud_webview.lib
-wxjpegd.lib
-wxpngd.lib
-wxtiffd.lib
-wxzlibd.lib
-)
-
-set(RELAY_WX_LIBS_Release
-wxbase30u.lib
-wxmsw30u_core.lib
-wxmsw30u_webview.lib
-wxjpeg.lib
-wxpng.lib
-wxtiff.lib
-wxzlib.lib
-)
-
-set(RELY_LIBS_WIN
-${RELAY_WX_LIBS_${CMAKE_BUILD_TYPE}}
-libcef.lib
-libcef_dll_wrapper.lib
-kernel32.lib
-user32.lib
-gdi32.lib
-comdlg32.lib
-winspool.lib
-winmm.lib
-shell32.lib
-comctl32.lib
-ole32.lib
-oleaut32.lib
-uuid.lib
-rpcrt4.lib
-advapi32.lib
-wsock32.lib
-wininet.lib
-)
+include(cmake/libs.cmake)
 
 target_link_libraries(${PROJECT_NAME} ${OTHER_LINK_FLAGS} ${RELY_LIBS_WIN})
